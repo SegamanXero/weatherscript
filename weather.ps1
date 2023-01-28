@@ -1,39 +1,60 @@
-# A powershell script by SegamanXero to quickly pull up weather via powershell for some reason.
+# A powershell script by SegamanXero to quickly pull up the weather via wttr.in by @igor_chubin.
 
-param ($arg)
+param ($arg, $location='[replace this with your desired default location]')
 if ($arg -eq $null) {
-	(Invoke-WebRequest 'http://wttr.in/42.367,-71.059?1FAuq' -UserAgent "curl" ).Content
+	$start='http://wttr.in/'
+	$end='?format="%l:+%C+%t+%f"'
+}
+if ($arg -eq '--today') {
+	$start='http://wttr.in/'
+	$end='?1FAuq'
+}
+if ($arg -eq '--3day') {
+	$start='http://wttr.in/'
+	$end='?FAuq'
+}
+if ($arg -eq '--graph') {
+	$start='http://v2d.wttr.in/'
+	$end='?FAuq'
 }
 if ($arg -eq '--moon') {
 	(Invoke-WebRequest http://wttr.in/moon?1auF -UserAgent "curl" ).Content
-}
-if ($arg -eq '--graph') {
-	(Invoke-WebRequest 'http://v2d.wttr.in/42.367,-71.059?FAuq' -UserAgent "curl" ).Content
-}
-if ($arg -eq '--3day') {
-	(Invoke-WebRequest 'http://wttr.in/42.367,-71.059?FAuq' -UserAgent "curl" ).Content
-}
-if ($arg -eq '--map') {
-	#(Invoke-WebRequest 'http://v3.wttr.in/42.367,-71.059?1FAuq' -UserAgent "curl" ).Content
-	echo "This function is currently not supported."
+	exit
 }
 if ($arg -eq '--info') {
 	(Invoke-WebRequest 'http://wttr.in/:help' -UserAgent "curl" ).Content
+	exit
 }
 if ($arg -eq '--help') {
-	write-host "||||||||||||||||||||||||||| Current Weather |||||||||||||||||||||||||||"
+	write-host " |||||||||||||||||||||||||||||" -foregroundcolor darkcyan -nonewline
+    write-host " Current Weather " -foregroundcolor black -backgroundcolor cyan -nonewline
+	write-host "||||||||||||||||||||||||||||| " -foregroundcolor darkcyan
 	write-host ""
-	write-host "A powershell script to get current weather via the wttr service."
-	write-host "Usage: weather --argument"
+	write-host "A powershell script to query the current weather via the http://wttr.in service by @igor_chubin."
 	write-host ""
-	write-host "location is currently hardcoded to North End/Strada via GPS location of 42.367,-71.059"
+	write-host "Usage: weather --argument [location]" -foregroundcolor blue
+	write-host ""
+	write-host "Location can be formatted as City,'City+State', zipcode, or GPS coordinate."
+	write-host "Use the --info argument and view the supported location type section for more info."
+	write-host ""
+	write-host "If no location is specified, the default location $location will be used."
 	write-host "Available arguments are as follows..."
 	write-host ""
-	write-host "Argument                        Description"
-	write-host "-----------------------------------------------------------------------------"
-	write-host "no argument                     Current day weather"
-	write-host "--3day                          Today and the next two days"
-	write-host "--graph                         Data-rich output format"
-	write-host "--map                           Weather map"
-	write-host "--info                          Displays the services help page"
+	write-host "Argument                        Description" -foregroundcolor cyan
+	write-host "-----------------------------------------------------------------------------" -foregroundcolor darkcyan
+	write-host "no argument                     Single line weather for default location" -foregroundcolor blue
+	write-host "--today                         Todays weather" -foregroundcolor blue
+	write-host "--3day                          Today and the next two days" -foregroundcolor blue
+	write-host "--graph                         Data-rich output format" -foregroundcolor blue
+	write-host "--moon                          Current moon phase" -foregroundcolor blue
+	write-host "--info                          Displays the services help page" -foregroundcolor blue
+	exit
 }
+if ($end -ne $null) {
+	$link=$start+$location+$end
+}
+if ($link -ne $null) {
+	(Invoke-WebRequest -Uri $link -UserAgent "curl" ).Content
+	exit
+}
+write-host "Command not recognized, script ended." -foregroundcolor red
