@@ -4,6 +4,7 @@ A powershell script that pulls current weather from the wttr.in service by @igor
 # Prerequisites
 
 You will need Powershell to use this. Powershell can be downloaded for Windows, Linux, and MacOS here https://github.com/PowerShell/PowerShell.
+
 The --Graph function requires a nerd font, which one can be downloaded here https://www.nerdfonts.com/font-downloads.
 
 # Usage/Installation
