@@ -1,11 +1,14 @@
 # weatherscript
-A powershell script that pulls current weather from the wttr service for my personal use.
+A powershell script that pulls current weather from the wttr.in service by @igor_chubin.
 
 # Usage/Installation
 
-Current usage: weather.ps1 --option
+Before use of the script, at line 3 delete [replace this with your desired default location] and replace with a desired default location within the single quotes.
+Seee "Supported location types" section at https://wttr.in/:help for location formatting.
+
+Usage: weather.ps1 --option location / weather.ps1 --option / weather.ps1
 
 Use the --help option in powershell or view the section where --help is triggered in the script to see available arguments.
 
 # Todo
-Add a location argument that merges user defined location or none selected a hardcoded location into the url that is sent to the service.
+Add more features as wttr service evolves.
